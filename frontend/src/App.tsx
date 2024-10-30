@@ -1,22 +1,15 @@
-import React, { useState } from "react";
-import { ImageUpload, ImageViewer } from "./components";
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { UploadPage, ViewerPage } from "../src/pages";
 
 const App: React.FC = () => {
-  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
-
-  const handleImageUpload = (filename: string) => {
-    setUploadedImageUrl(filename);
-  };
-
   return (
-    <div>
-      <ImageUpload onImageUpload={handleImageUpload} />
-      {uploadedImageUrl && (
-        <div>
-          <ImageViewer imageUrl={uploadedImageUrl} />
-        </div>
-      )}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<UploadPage />} />
+        <Route path="/viewer/:filename" element={<ViewerPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
