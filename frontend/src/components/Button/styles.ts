@@ -13,7 +13,7 @@ export const StyledButton = styled.button<Props>`
   border: 1px solid
     ${(props) => (props.variant === "secondary" ? "#000" : "#007bff")};
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   border-radius: 5px;
   transition: all 0.3s ease;

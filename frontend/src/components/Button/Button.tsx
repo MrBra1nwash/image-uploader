@@ -4,7 +4,7 @@ import { StyledButton } from "./styles";
 
 export type Props = PropsWithChildren<{
   variant: ButtonVariant;
-  disabled: boolean;
+  disabled?: boolean;
   onClick: () => void;
 }>;
 

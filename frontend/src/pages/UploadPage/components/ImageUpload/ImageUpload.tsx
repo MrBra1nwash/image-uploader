@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { Button } from "../../../../components";
+import { UploadContainer, UploadIcon, UploadNote, HiddenInput } from "./styles";
+
+import { ReactComponent as ImagesLogo } from "./assets/Images.svg";
 
 type Props = {
   onImageUpload: (filename: string) => void;
@@ -36,28 +39,25 @@ export const ImageUpload = ({ onImageUpload }: Props) => {
   };
 
   return (
-    <div>
-      <input
+    <UploadContainer
+      onClick={() => document.getElementById("imageInput")?.click()}
+    >
+      <UploadIcon>
+        <ImagesLogo />
+      </UploadIcon>
+      <Button variant="primary" onClick={handleUpload}>
+        Choose Image
+      </Button>
+      <UploadNote>or, drop the file here</UploadNote>
+      <HiddenInput
         type="file"
+        id="imageInput"
         accept="image/jpeg, image/png"
         onChange={handleFileChange}
       />
-      <Button variant="primary" onClick={handleUpload} disabled={!selectedFile}>
-        Upload
-      </Button>
-      <Button variant="primary" onClick={handleUpload} disabled>
-        Upload
-      </Button>
-      <Button
-        variant="secondary"
-        onClick={handleUpload}
-        disabled={!selectedFile}
-      >
-        Upload
-      </Button>
-      <Button variant="secondary" onClick={handleUpload} disabled>
-        Upload
-      </Button>
-    </div>
+    </UploadContainer>
+    // <Button variant="primary" onClick={handleUpload} disabled={!selectedFile}>
+    //   Upload
+    // </Button>
   );
 };

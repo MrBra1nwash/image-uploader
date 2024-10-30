@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "../Button/Button";
 
 type Props = {
   onRotate: () => void;
@@ -10,10 +11,18 @@ type Props = {
 export const Controls = ({ onRotate, onZoomIn, onZoomOut, onReset }: Props) => {
   return (
     <div>
-      <button onClick={onRotate}>Rotate</button>
-      <button onClick={onZoomIn}>Zoom In</button>
-      <button onClick={onZoomOut}>Zoom Out</button>
-      <button onClick={onReset}>Reset</button>
+      <Button variant="secondary" onClick={onRotate}>
+        Rotate
+      </Button>
+      <Button variant="secondary" onClick={onZoomIn}>
+        Zoom In
+      </Button>
+      <Button variant="secondary" onClick={onZoomOut}>
+        Zoom Out
+      </Button>
+      <Button variant="secondary" onClick={onReset}>
+        Reset
+      </Button>
     </div>
   );
 };
