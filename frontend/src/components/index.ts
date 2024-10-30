@@ -1,3 +1,2 @@
-export { Controls } from "./Controls/Controls";
-export { ImageViewer } from "./ImageViewer/ImageViewer";
 export { Button } from "./Button/Button";
+export { ErrorBanner } from "./ErrorBanner/ErrorBanner";

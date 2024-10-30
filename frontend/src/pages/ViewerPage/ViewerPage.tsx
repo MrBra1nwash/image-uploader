@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { ImageViewer } from "../../components";
+import { ImageViewer } from "./components/ImageViewer/ImageViewer";
 
 export const ViewerPage = () => {
   const { filename } = useParams();

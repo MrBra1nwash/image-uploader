@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import { Controls } from "../Controls/Controls";
+import { BACK_END_URL } from "../../../../constants";
 
 type Props = {
   imageUrl: string;
@@ -30,7 +31,7 @@ export const ImageViewer = ({ imageUrl }: Props) => {
       ctx.drawImage(img, 0, 0);
     };
 
-    img.src = `http://localhost:3001/images/${imageUrl}`;
+    img.src = `${BACK_END_URL}/images/${imageUrl}`;
   }, [imageUrl]);
 
   const handleRotate = () => {

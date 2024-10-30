@@ -1,0 +1,1 @@
+export const BANNER_DISAPPEAR_TIMEOUT = 5000;

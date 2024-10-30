@@ -4,7 +4,7 @@ const { formidable } = require("formidable");
 
 const port = 3001;
 
-const resolveCORS = () => {
+const resolveCORS = (res) => {
   // Set CORS headers to allow requests from localhost:3000
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
   res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
@@ -14,7 +14,7 @@ const resolveCORS = () => {
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
 
-  resolveCORS();
+  resolveCORS(res);
 
   if (req.method === "POST" && url.pathname === "/upload") {
     const form = formidable({ multiples: false });
