@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ImageUpload } from "../../components";
+import { ImageUpload } from "./components/ImageUpload/ImageUpload";
 
 export const UploadPage = () => {
   const navigate = useNavigate();

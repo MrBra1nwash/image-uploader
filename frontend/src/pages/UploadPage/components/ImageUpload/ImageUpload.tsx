@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "../../../../components";
 
 type Props = {
   onImageUpload: (filename: string) => void;
@@ -41,9 +42,22 @@ export const ImageUpload = ({ onImageUpload }: Props) => {
         accept="image/jpeg, image/png"
         onChange={handleFileChange}
       />
-      <button onClick={handleUpload} disabled={!selectedFile}>
+      <Button variant="primary" onClick={handleUpload} disabled={!selectedFile}>
         Upload
-      </button>
+      </Button>
+      <Button variant="primary" onClick={handleUpload} disabled>
+        Upload
+      </Button>
+      <Button
+        variant="secondary"
+        onClick={handleUpload}
+        disabled={!selectedFile}
+      >
+        Upload
+      </Button>
+      <Button variant="secondary" onClick={handleUpload} disabled>
+        Upload
+      </Button>
     </div>
   );
 };
