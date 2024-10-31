@@ -1,6 +1,20 @@
-# image-uploader
+# Image uploader
 
-General comments:
+# Setup
+
+In order ro run frontend part:
+
+1. From terminal go into frontend directory - `cd frontend`
+2. Install dependencies `npm i`
+3. Run frontend `npm start`
+
+In order ro run backend part:
+
+1. From terminal go into backend directory - `cd backend`
+2. Install dependencies `npm i`
+3. Run frontend `node index.js`
+
+## General comments:
 
 - I didn't use `useCallback`, `useMemo`, `memo`, because it doesn't make sense for this small app. All these performance optimizations costs you something (complexity, extra lines of code etc) and I don't use them when they are not needed.
 

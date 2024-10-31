@@ -7,6 +7,8 @@ import {
   Container,
   ControlsContainer,
 } from "./styles";
+import { useIsMobile } from "../../../../services";
+import { MobileControls } from "../MobileControls/MobileControls";
 
 type Props = {
   imageUrl: string;
@@ -16,6 +18,7 @@ export const ImageViewer = ({ imageUrl }: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [rotation, setRotation] = useState(0);
   const [scale, setScale] = useState(1);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -56,18 +59,29 @@ export const ImageViewer = ({ imageUrl }: Props) => {
 
   return (
     <Container>
-      <CanvasContainer>
+      <CanvasContainer isMobile={isMobile}>
         <Canvas ref={canvasRef} rotation={rotation} scale={scale} />
       </CanvasContainer>
-      <ControlsContainer>
-        <Controls
-          scale={scale}
-          onReset={handleReset}
-          onRotateLeft={handleRotateLeft}
-          onRotateRight={handleRotateRight}
-          onZoomIn={handleZoomIn}
-          onZoomOut={handleZoomOut}
-        />
+      <ControlsContainer isMobile={isMobile}>
+        {isMobile && (
+          <MobileControls
+            onReset={handleReset}
+            onRotateLeft={handleRotateLeft}
+            onRotateRight={handleRotateRight}
+            onZoomIn={handleZoomIn}
+            onZoomOut={handleZoomOut}
+          />
+        )}
+        {!isMobile && (
+          <Controls
+            scale={scale}
+            onReset={handleReset}
+            onRotateLeft={handleRotateLeft}
+            onRotateRight={handleRotateRight}
+            onZoomIn={handleZoomIn}
+            onZoomOut={handleZoomOut}
+          />
+        )}
       </ControlsContainer>
     </Container>
   );

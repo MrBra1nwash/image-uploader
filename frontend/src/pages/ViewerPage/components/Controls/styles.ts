@@ -15,12 +15,12 @@ export const ZoomValue = styled.div`
   font-size: 16px;
 `;
 
-export const ControlIconWrapper = styled.button`
+export const ControlIconWrapper = styled.div`
   display: flex;
   align-items: center;
   align-self: baseline;
   justify-content: center;
-  height: 30px;
+  height: 40px;
   min-width: 40px;
   cursor: pointer;
   background-color: rgba(255, 255, 255, 0.04);
@@ -33,13 +33,14 @@ export const ControlIconWrapper = styled.button`
   }
 `;
 
-export const ResetButton = styled.button`
+export const ResetButton = styled.div`
   width: 100%;
   cursor: pointer;
   outline: none;
   border: none;
   border-radius: 4px;
   padding: 10px 16px;
+  margin-top: 10px;
   color: white;
   font-size: 16px;
   color: #bec0c8;

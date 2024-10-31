@@ -14,7 +14,7 @@ export const UploadContainer = styled.div`
   margin-bottom: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
-  background-color: #f9f9f9;
+  background-color: #eaeaea;
 
   &:hover {
     border-color: #007bff;
