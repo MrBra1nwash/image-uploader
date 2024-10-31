@@ -4,7 +4,7 @@ import { HiddenInput, UploadContainer, UploadIcon, UploadNote } from "./styles";
 
 import { BACK_END_URL } from "../../../../constants";
 import { useFetch } from "../../../../services";
-import { ReactComponent as ImagesLogo } from "./assets/Images.svg";
+import { ReactComponent as ImagesLogo } from "./assets/images.svg";
 
 type Props = {
   onImageUpload: (filename: string) => void;

@@ -1,17 +1,16 @@
-import { useRef, useState, useEffect } from "react";
-import styled from "styled-components";
-import { Controls } from "../Controls/Controls";
+import { useEffect, useRef, useState } from "react";
 import { BACK_END_URL } from "../../../../constants";
+import { Controls } from "../Controls/Controls";
+import {
+  Canvas,
+  CanvasContainer,
+  Container,
+  ControlsContainer,
+} from "./styles";
 
 type Props = {
   imageUrl: string;
 };
-
-const Canvas = styled.canvas<{ rotation: number; scale: number }>`
-  transform: rotate(${(props) => props.rotation}deg)
-    scale(${(props) => props.scale});
-  transform-origin: center center;
-`;
 
 export const ImageViewer = ({ imageUrl }: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -34,8 +33,12 @@ export const ImageViewer = ({ imageUrl }: Props) => {
     img.src = `${BACK_END_URL}/images/${imageUrl}`;
   }, [imageUrl]);
 
-  const handleRotate = () => {
+  const handleRotateLeft = () => {
     setRotation((prevRotation) => (prevRotation + 90) % 360);
+  };
+
+  const handleRotateRight = () => {
+    setRotation((prevRotation) => (prevRotation - 90) % 360);
   };
 
   const handleZoomIn = () => {
@@ -52,14 +55,20 @@ export const ImageViewer = ({ imageUrl }: Props) => {
   };
 
   return (
-    <div>
-      <Canvas ref={canvasRef} rotation={rotation} scale={scale} />
-      <Controls
-        onReset={handleReset}
-        onRotate={handleRotate}
-        onZoomIn={handleZoomIn}
-        onZoomOut={handleZoomOut}
-      />
-    </div>
+    <Container>
+      <CanvasContainer>
+        <Canvas ref={canvasRef} rotation={rotation} scale={scale} />
+      </CanvasContainer>
+      <ControlsContainer>
+        <Controls
+          scale={scale}
+          onReset={handleReset}
+          onRotateLeft={handleRotateLeft}
+          onRotateRight={handleRotateRight}
+          onZoomIn={handleZoomIn}
+          onZoomOut={handleZoomOut}
+        />
+      </ControlsContainer>
+    </Container>
   );
 };

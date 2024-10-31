@@ -2,12 +2,12 @@ import styled from "styled-components";
 import { Props } from "./Button";
 
 export const StyledButton = styled.button<Props>`
-  background-color: ${(props) =>
-    props.variant === "primary" ? "#007bff" : "#fff"};
-  color: ${(props) =>
-    props.variant === "primary"
+  background-color: ${({ variant }) =>
+    variant === "primary" ? "#007bff" : "#fff"};
+  color: ${({ variant }) =>
+    variant === "primary"
       ? "#fff"
-      : props.variant === "secondary"
+      : variant === "secondary"
       ? "#000"
       : "#007bff"};
   border: 1px solid
