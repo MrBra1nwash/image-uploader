@@ -34,7 +34,6 @@ export const ControlIconWrapper = styled.div`
 `;
 
 export const ResetButton = styled.div`
-  width: 100%;
   cursor: pointer;
   outline: none;
   border: none;
@@ -44,6 +43,7 @@ export const ResetButton = styled.div`
   color: white;
   font-size: 16px;
   color: #bec0c8;
+  text-align: center;
   background-color: rgba(255, 255, 255, 0.04);
 
   &:hover {

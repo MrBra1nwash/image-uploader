@@ -1,12 +1,17 @@
 import { useMemo } from "react";
 import { Accordion } from "../../../../components";
 import { MenuRow } from "../MenuRow/MenuRow";
-import { ReactComponent as MinusIcon } from "../../assets/minus.svg";
-import { ReactComponent as PlusIcon } from "../../assets/plus.svg";
-import { ReactComponent as RotateCircle } from "../../assets/rotate-circle.svg";
-import { ReactComponent as RotateLeft } from "../../assets/rotate-left.svg";
-import { ReactComponent as RotateRight } from "../../assets/rotate-right.svg";
-import { ReactComponent as ZoomIcon } from "../../assets/zoom.svg";
+import {
+  FlipHorizontalIcon,
+  FlipIcon,
+  FlipVerticalIcon,
+  MinusIcon,
+  PlusIcon,
+  RotateCircleIcon,
+  RotateLeftIcon,
+  RotateRightIcon,
+  ZoomIcon,
+} from "../../assets";
 import {
   ControlIconWrapper,
   ControlsContainer,
@@ -17,6 +22,8 @@ import {
 
 type Props = {
   scale: number;
+  onFlipHorizontal: () => void;
+  onFlipVertical: () => void;
   onRotateLeft: () => void;
   onRotateRight: () => void;
   onZoomIn: () => void;
@@ -26,6 +33,8 @@ type Props = {
 
 export const Controls = ({
   scale,
+  onFlipHorizontal,
+  onFlipVertical,
   onRotateLeft,
   onRotateRight,
   onZoomIn,
@@ -52,13 +61,23 @@ export const Controls = ({
           <ZoomValue>{zoomValue}</ZoomValue>
         </RowControlsContainer>
       </Accordion>
-      <Accordion title={<MenuRow icon={RotateCircle}>Rotate</MenuRow>}>
+      <Accordion title={<MenuRow icon={RotateCircleIcon}>Rotate</MenuRow>}>
         <RowControlsContainer>
           <ControlIconWrapper onClick={onRotateLeft}>
-            <RotateLeft />
+            <RotateLeftIcon />
           </ControlIconWrapper>
           <ControlIconWrapper onClick={onRotateRight}>
-            <RotateRight />
+            <RotateRightIcon />
+          </ControlIconWrapper>
+        </RowControlsContainer>
+      </Accordion>
+      <Accordion title={<MenuRow icon={FlipIcon}>Flip</MenuRow>}>
+        <RowControlsContainer>
+          <ControlIconWrapper onClick={onFlipVertical}>
+            <FlipVerticalIcon />
+          </ControlIconWrapper>
+          <ControlIconWrapper onClick={onFlipHorizontal}>
+            <FlipHorizontalIcon />
           </ControlIconWrapper>
         </RowControlsContainer>
       </Accordion>

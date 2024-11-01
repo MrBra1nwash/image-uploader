@@ -1,8 +1,11 @@
-import { ReactComponent as MinusIcon } from "../../assets/minus.svg";
-import { ReactComponent as PlusIcon } from "../../assets/plus.svg";
-import { ReactComponent as RotateLeftIcon } from "../../assets/rotate-left.svg";
-import { ReactComponent as RotateRightIcon } from "../../assets/rotate-right.svg";
-import { ReactComponent as ResetIcon } from "../../assets/reset.svg";
+import {
+  MinusIcon,
+  PlusIcon,
+  RotateLeftIcon,
+  RotateRightIcon,
+  ResetIcon,
+} from "../../assets";
+
 import {
   ControlIconWrapper,
   ControlItemWrapper,

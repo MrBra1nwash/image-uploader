@@ -2,7 +2,20 @@ const http = require("http");
 const fs = require("fs");
 const { formidable } = require("formidable");
 
-const port = 3001;
+const PORT = 3001;
+
+const ALLOWED_TYPES = [
+  "image/jpg",
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/bmp",
+  "image/webp",
+];
+const ALLOWED_EXTENSIONS = ALLOWED_TYPES.map((type) =>
+  type.replace("image/", ".")
+).join(", ");
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 const resolveCORS = (res) => {
   // Set CORS headers to allow requests from localhost:3000
@@ -30,11 +43,56 @@ const server = http.createServer((req, res) => {
       const file = files.image[0];
       const newPath = `uploads/${Date.now()}-${file.originalFilename}`;
 
+      if (!ALLOWED_TYPES.includes(file.mimetype.toLowerCase())) {
+        console.error("Invalid file type:", file.mimetype);
+        res.writeHead(400, { "Content-Type": "application/json" });
+
+        res.end(
+          JSON.stringify({
+            error: `Invalid image format: ${file.mimetype}. Please upload one of the allowed types: ${ALLOWED_EXTENSIONS}.`,
+          })
+        );
+
+        // Clean up temporary file
+        fs.unlink(file.filepath, (err) => {
+          if (err) {
+            console.error("Error deleting temp file:", err);
+          }
+        });
+
+        return;
+      }
+
+      if (file.size > MAX_FILE_SIZE) {
+        console.error("File size exceeds limit:", file.size);
+        res.writeHead(400, { "Content-Type": "application/json" });
+        res.end(
+          JSON.stringify({
+            error: `File size exceeds the limit of ${
+              MAX_FILE_SIZE / (1024 * 1024)
+            }MB.`,
+          })
+        );
+
+        // Clean up temporary file
+        fs.unlink(file.filepath, (err) => {
+          if (err) {
+            console.error("Error deleting temp file:", err);
+          }
+        });
+
+        return;
+      }
+
       fs.rename(file.filepath, newPath, (err) => {
         if (err) {
           console.error("Error saving image:", err);
-          res.writeHead(500, { "Content-Type": "text/plain" });
-          res.end("Error uploading image.");
+          res.writeHead(500, { "Content-Type": "application/json" });
+          res.end(
+            JSON.stringify({
+              error: "Error uploading image.",
+            })
+          );
           return;
         }
 
@@ -49,8 +107,12 @@ const server = http.createServer((req, res) => {
     fs.readFile(imagePath, (err, data) => {
       if (err) {
         console.error("Error reading image:", err);
-        res.writeHead(404, { "Content-Type": "text/plain" });
-        res.end("Image not found.");
+        res.writeHead(404, { "Content-Type": "application/json" });
+        res.end(
+          JSON.stringify({
+            error: "Image not found.",
+          })
+        );
         return;
       }
 
@@ -58,11 +120,15 @@ const server = http.createServer((req, res) => {
       res.end(data);
     });
   } else {
-    res.writeHead(404, { "Content-Type": "text/plain" });
-    res.end("Not found.");
+    res.writeHead(404, { "Content-Type": "application/json" });
+    res.end(
+      JSON.stringify({
+        error: "Not found.",
+      })
+    );
   }
 });
 
-server.listen(port, () => {
-  console.log(`Backend server listening on port ${port}`);
+server.listen(PORT, () => {
+  console.log(`Backend server listening on port ${PORT}`);
 });

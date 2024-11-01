@@ -8,10 +8,9 @@ const mobileControls = css`
 `;
 
 export const Container = styled.div`
-  background-color: #f4f4f5;
   display: flex;
   flex-direction: column;
-  background-color: #414243;
+  background-color: #eaeaea;
 
   @media (min-width: 768px) {
     flex-direction: row;
@@ -44,15 +43,21 @@ export const ControlsContainer = styled.div<{ isMobile: boolean }>`
   }
 `;
 
-export const Canvas = styled.canvas<{ rotation: number; scale: number }>`
+export const Canvas = styled.canvas<{
+  rotation: number;
+  scale: number;
+  flipHorizontal: boolean;
+  flipVertical: boolean;
+}>`
   margin: auto;
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  transform: rotate(${(props) => props.rotation}deg)
-    scale(${(props) => props.scale});
+  transform: scaleX(${({ flipHorizontal }) => (flipHorizontal ? -1 : 1)})
+    scaleY(${({ flipVertical }) => (flipVertical ? -1 : 1)})
+    rotate(${({ rotation }) => rotation}deg) scale(${({ scale }) => scale});
   transform-origin: center center;
   max-width: 100%;
   max-height: 100%;

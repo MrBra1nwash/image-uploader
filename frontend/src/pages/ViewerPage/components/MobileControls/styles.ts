@@ -10,10 +10,13 @@ export const MobileControlsContainer = styled.div`
   padding: 14px;
   display: flex;
   flex-direction: row;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 8px;
   height: 100%;
+  width: 100%;
   box-sizing: border-box;
+  overflow-x: auto;
 `;
 
 export const ControlItemWrapper = styled.div`
@@ -23,7 +26,9 @@ export const ControlItemWrapper = styled.div`
   cursor: pointer;
   padding: 2px;
   gap: 3px;
-  width: 72px;
+  flex: 1 0 auto;
+  flex: 0 0 auto;
+  min-width: 60px;
 `;
 
 export const ControlIconWrapper = styled.div`

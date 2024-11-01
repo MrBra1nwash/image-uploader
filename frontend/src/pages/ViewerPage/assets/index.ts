@@ -1,0 +1,10 @@
+export { ReactComponent as MinusIcon } from "./minus.svg";
+export { ReactComponent as PlusIcon } from "./plus.svg";
+export { ReactComponent as RotateCircleIcon } from "./rotate-circle.svg";
+export { ReactComponent as RotateLeftIcon } from "./rotate-left.svg";
+export { ReactComponent as RotateRightIcon } from "./rotate-right.svg";
+export { ReactComponent as ZoomIcon } from "./zoom.svg";
+export { ReactComponent as ResetIcon } from "./reset.svg";
+export { ReactComponent as FlipIcon } from "./flip.svg";
+export { ReactComponent as FlipVerticalIcon } from "./flip-vertical.svg";
+export { ReactComponent as FlipHorizontalIcon } from "./flip-horizontal.svg";

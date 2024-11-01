@@ -18,6 +18,8 @@ export const ImageViewer = ({ imageUrl }: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [rotation, setRotation] = useState(0);
   const [scale, setScale] = useState(1);
+  const [flipHorizontal, setFlipHorizontal] = useState(false);
+  const [flipVertical, setFlipVertical] = useState(false);
   const isMobile = useIsMobile();
 
   useEffect(() => {
@@ -35,6 +37,14 @@ export const ImageViewer = ({ imageUrl }: Props) => {
 
     img.src = `${BACK_END_URL}/images/${imageUrl}`;
   }, [imageUrl]);
+
+  const handleFlipHorizontal = () => {
+    setFlipHorizontal((prevFlip) => !prevFlip);
+  };
+
+  const handleFlipVertical = () => {
+    setFlipVertical((prevFlip) => !prevFlip);
+  };
 
   const handleRotateLeft = () => {
     setRotation((prevRotation) => (prevRotation + 90) % 360);
@@ -55,12 +65,17 @@ export const ImageViewer = ({ imageUrl }: Props) => {
   const handleReset = () => {
     setRotation(0);
     setScale(1);
+    setFlipHorizontal(false);
+    setFlipVertical(false);
   };
 
   return (
     <Container>
       <CanvasContainer isMobile={isMobile}>
-        <Canvas ref={canvasRef} rotation={rotation} scale={scale} />
+        <Canvas
+          ref={canvasRef}
+          {...{ rotation, scale, flipHorizontal, flipVertical }}
+        />
       </CanvasContainer>
       <ControlsContainer isMobile={isMobile}>
         {isMobile && (
@@ -75,6 +90,8 @@ export const ImageViewer = ({ imageUrl }: Props) => {
         {!isMobile && (
           <Controls
             scale={scale}
+            onFlipHorizontal={handleFlipHorizontal}
+            onFlipVertical={handleFlipVertical}
             onReset={handleReset}
             onRotateLeft={handleRotateLeft}
             onRotateRight={handleRotateRight}

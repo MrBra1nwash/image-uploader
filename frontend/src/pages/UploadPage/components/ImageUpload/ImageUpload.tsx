@@ -1,10 +1,18 @@
 import { ChangeEvent, useRef } from "react";
 import { Button, ErrorBanner } from "../../../../components";
-import { HiddenInput, UploadContainer, UploadIcon, UploadNote } from "./styles";
+import {
+  HiddenInput,
+  UploadContainer,
+  UploadIcon,
+  UploadNote,
+  UploadNoteHighlight,
+} from "./styles";
 
 import { BACK_END_URL } from "../../../../constants";
 import { useFetch } from "../../../../services";
 import { ReactComponent as ImagesLogo } from "./assets/images.svg";
+import { useDragAndDrop } from "../../services/use-drag-and-drop/use-drag-and-drop";
+import { ALLOWED_EXTENSIONS, MAX_FILE_SIZE } from "./constants";
 
 type Props = {
   onImageUpload: (filename: string) => void;
@@ -47,6 +55,23 @@ export const ImageUpload = ({ onImageUpload }: Props) => {
     );
   };
 
+  const {
+    handleDragEnter,
+    handleDragLeave,
+    handleDragOver,
+    handleDrop,
+    isDragging,
+  } = useDragAndDrop({ handleUpload });
+
+  const uploadNoteText = (
+    <>
+      or, drop the file here. Supported extensions:{" "}
+      <UploadNoteHighlight>{ALLOWED_EXTENSIONS.join(", ")}</UploadNoteHighlight>
+      . Max size is{" "}
+      <UploadNoteHighlight>{MAX_FILE_SIZE} Mb</UploadNoteHighlight>.
+    </>
+  );
+
   return (
     <>
       {/* Ideally, it should be placed at the root level of the application.
@@ -55,17 +80,24 @@ export const ImageUpload = ({ onImageUpload }: Props) => {
       anywhere else, it's perfectly fine to keep it here */}
       <ErrorBanner message={error?.message} />
 
-      <UploadContainer onClick={handleContainerClick}>
+      <UploadContainer
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+        isDragging={isDragging}
+        onClick={handleContainerClick}
+      >
         <UploadIcon>
           <ImagesLogo />
         </UploadIcon>
         <Button variant="primary">Choose Image</Button>
-        <UploadNote>or, drop the file here</UploadNote>
+        <UploadNote>{uploadNoteText}</UploadNote>
         <HiddenInput
           ref={inputRef}
           type="file"
           id="imageInput"
-          accept="image/jpeg, image/png"
+          accept=".jpg, .jpeg, .png, .gif, .bmp, .webp"
           onChange={handleFileChange}
         />
       </UploadContainer>

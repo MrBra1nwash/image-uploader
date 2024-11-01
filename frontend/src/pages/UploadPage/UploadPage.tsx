@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, DragEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { ImageUpload } from "./components/ImageUpload/ImageUpload";
 import { Description, PageContainer, Title } from "./styles";
@@ -17,8 +17,13 @@ export const UploadPage = () => {
     }
   };
 
+  const handleDrag = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "none";
+  };
+
   return (
-    <PageContainer>
+    <PageContainer onDragOver={handleDrag}>
       <Title>Free Online Image Viewer</Title>
       <Description>Upload and View Images Online</Description>
       <ImageUpload onImageUpload={handleImageUpload} />

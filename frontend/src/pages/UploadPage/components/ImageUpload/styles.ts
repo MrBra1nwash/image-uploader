@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const UploadContainer = styled.div`
+export const UploadContainer = styled.div<{ isDragging: boolean }>`
   position: relative;
   overflow: hidden;
   display: flex;
@@ -14,11 +14,16 @@ export const UploadContainer = styled.div`
   margin-bottom: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
-  background-color: #eaeaea;
+  background-color: ${({ isDragging }) => (isDragging ? "#f0f0f0" : "#eaeaea")};
 
   &:hover {
     border-color: #007bff;
   }
+`;
+
+export const UploadNoteHighlight = styled.span`
+  font-weight: bold;
+  color: #666;
 `;
 
 export const UploadIcon = styled.div`
@@ -27,6 +32,8 @@ export const UploadIcon = styled.div`
 `;
 
 export const UploadNote = styled.p`
+  text-align: center;
+  padding: 4px 20px;
   font-size: 14px;
 `;
 
