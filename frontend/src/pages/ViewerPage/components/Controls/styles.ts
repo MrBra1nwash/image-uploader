@@ -15,22 +15,29 @@ export const ZoomValue = styled.div`
   font-size: 16px;
 `;
 
-export const ControlIconWrapper = styled.div`
+export const ControlIconWrapper = styled.div<{ disabled: boolean }>`
   display: flex;
   align-items: center;
   align-self: baseline;
   justify-content: center;
   height: 40px;
   min-width: 40px;
-  cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.04);
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+  background-color: rgba(
+    255,
+    255,
+    255,
+    ${({ disabled }) => (disabled ? "0.01" : "0.04")}
+  );
   outline: none;
   border: none;
   border-radius: 4px;
 
-  &:hover {
+  ${({ disabled }) =>
+    !disabled &&
+    `&:hover {
     background-color: rgba(255, 255, 255, 0.08);
-  }
+  }`}
 `;
 
 export const ResetButton = styled.div`

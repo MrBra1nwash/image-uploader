@@ -5,11 +5,14 @@ import {
   FlipHorizontalIcon,
   FlipIcon,
   FlipVerticalIcon,
+  LeftArrowIcon,
   MinusIcon,
   PlusIcon,
+  RightArrowIcon,
   RotateCircleIcon,
   RotateLeftIcon,
   RotateRightIcon,
+  TimeIcon,
   ZoomIcon,
 } from "../../assets";
 import {
@@ -19,20 +22,21 @@ import {
   RowControlsContainer,
   ZoomValue,
 } from "./styles";
+import { ControlCallbacks } from "../../types";
+import { ControlConfig } from "./types";
 
-type Props = {
+type Props = ControlCallbacks & {
   scale: number;
-  onFlipHorizontal: () => void;
-  onFlipVertical: () => void;
-  onRotateLeft: () => void;
-  onRotateRight: () => void;
-  onZoomIn: () => void;
-  onZoomOut: () => void;
-  onReset: () => void;
+  isRedoDisabled: boolean;
+  isUndoDisabled: boolean;
 };
 
 export const Controls = ({
   scale,
+  isRedoDisabled,
+  isUndoDisabled,
+  onUndo,
+  onRedo,
   onFlipHorizontal,
   onFlipVertical,
   onRotateLeft,
@@ -48,39 +52,98 @@ export const Controls = ({
     return Math.round(scale * 100) + "%";
   }, [scale]);
 
+  const controls: ControlConfig[] = [
+    {
+      title: {
+        icon: ZoomIcon,
+        text: "Zoom",
+      },
+      buttons: [
+        {
+          icon: MinusIcon,
+          callback: onZoomOut,
+        },
+        {
+          icon: PlusIcon,
+          callback: onZoomIn,
+        },
+      ],
+      extra: <ZoomValue>{zoomValue}</ZoomValue>,
+    },
+    {
+      title: {
+        icon: RotateCircleIcon,
+        text: "Rotate",
+      },
+      buttons: [
+        {
+          icon: RotateLeftIcon,
+          callback: onRotateLeft,
+        },
+        {
+          icon: RotateRightIcon,
+          callback: onRotateRight,
+        },
+      ],
+    },
+    {
+      title: {
+        icon: FlipIcon,
+        text: "Flip",
+      },
+      buttons: [
+        {
+          icon: FlipVerticalIcon,
+          callback: onFlipVertical,
+        },
+        {
+          icon: FlipHorizontalIcon,
+          callback: onFlipHorizontal,
+        },
+      ],
+    },
+    {
+      title: {
+        icon: TimeIcon,
+        text: "Time Travel",
+      },
+      buttons: [
+        {
+          icon: LeftArrowIcon,
+          callback: onUndo,
+          disabled: isUndoDisabled,
+        },
+        {
+          icon: RightArrowIcon,
+          callback: onRedo,
+          disabled: isRedoDisabled,
+        },
+      ],
+    },
+  ];
+
   return (
     <ControlsContainer>
-      <Accordion title={<MenuRow icon={ZoomIcon}>Zoom</MenuRow>}>
-        <RowControlsContainer>
-          <ControlIconWrapper onClick={onZoomOut}>
-            <MinusIcon />
-          </ControlIconWrapper>
-          <ControlIconWrapper onClick={onZoomIn}>
-            <PlusIcon />
-          </ControlIconWrapper>
-          <ZoomValue>{zoomValue}</ZoomValue>
-        </RowControlsContainer>
-      </Accordion>
-      <Accordion title={<MenuRow icon={RotateCircleIcon}>Rotate</MenuRow>}>
-        <RowControlsContainer>
-          <ControlIconWrapper onClick={onRotateLeft}>
-            <RotateLeftIcon />
-          </ControlIconWrapper>
-          <ControlIconWrapper onClick={onRotateRight}>
-            <RotateRightIcon />
-          </ControlIconWrapper>
-        </RowControlsContainer>
-      </Accordion>
-      <Accordion title={<MenuRow icon={FlipIcon}>Flip</MenuRow>}>
-        <RowControlsContainer>
-          <ControlIconWrapper onClick={onFlipVertical}>
-            <FlipVerticalIcon />
-          </ControlIconWrapper>
-          <ControlIconWrapper onClick={onFlipHorizontal}>
-            <FlipHorizontalIcon />
-          </ControlIconWrapper>
-        </RowControlsContainer>
-      </Accordion>
+      {controls.map(({ title, buttons, extra }, index) => (
+        // Totally fine to use `index` as a key in this case. We don't change order of items in any way
+        <Accordion
+          key={index}
+          title={<MenuRow icon={title.icon}>{title.text}</MenuRow>}
+        >
+          <RowControlsContainer>
+            {buttons.map(({ callback, icon: Icon, disabled }, index) => (
+              <ControlIconWrapper
+                key={index}
+                onClick={callback}
+                disabled={!!disabled}
+              >
+                <Icon />
+              </ControlIconWrapper>
+            ))}
+            {extra}
+          </RowControlsContainer>
+        </Accordion>
+      ))}
 
       <ResetButton onClick={onReset}>Reset</ResetButton>
     </ControlsContainer>

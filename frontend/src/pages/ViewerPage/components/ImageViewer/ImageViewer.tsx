@@ -1,25 +1,28 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { BACK_END_URL } from "../../../../constants";
+import { useIsMobile } from "../../../../services";
+import { useUndoRedoStore } from "../../services/use-undo-redo-store/use-undo-redo-store";
 import { Controls } from "../Controls/Controls";
+import { MobileControls } from "../MobileControls/MobileControls";
 import {
   Canvas,
   CanvasContainer,
   Container,
   ControlsContainer,
 } from "./styles";
-import { useIsMobile } from "../../../../services";
-import { MobileControls } from "../MobileControls/MobileControls";
 
 type Props = {
   imageUrl: string;
 };
 
 export const ImageViewer = ({ imageUrl }: Props) => {
+  const {
+    state: { flipHorizontal, flipVertical, rotation, scale },
+    actions,
+    isRedoDisabled,
+    isUndoDisabled,
+  } = useUndoRedoStore();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [rotation, setRotation] = useState(0);
-  const [scale, setScale] = useState(1);
-  const [flipHorizontal, setFlipHorizontal] = useState(false);
-  const [flipVertical, setFlipVertical] = useState(false);
   const isMobile = useIsMobile();
 
   useEffect(() => {
@@ -38,37 +41,6 @@ export const ImageViewer = ({ imageUrl }: Props) => {
     img.src = `${BACK_END_URL}/images/${imageUrl}`;
   }, [imageUrl]);
 
-  const handleFlipHorizontal = () => {
-    setFlipHorizontal((prevFlip) => !prevFlip);
-  };
-
-  const handleFlipVertical = () => {
-    setFlipVertical((prevFlip) => !prevFlip);
-  };
-
-  const handleRotateLeft = () => {
-    setRotation((prevRotation) => (prevRotation + 90) % 360);
-  };
-
-  const handleRotateRight = () => {
-    setRotation((prevRotation) => (prevRotation - 90) % 360);
-  };
-
-  const handleZoomIn = () => {
-    setScale((prevScale) => prevScale + 0.1);
-  };
-
-  const handleZoomOut = () => {
-    setScale((prevScale) => Math.max(0.1, prevScale - 0.1));
-  };
-
-  const handleReset = () => {
-    setRotation(0);
-    setScale(1);
-    setFlipHorizontal(false);
-    setFlipVertical(false);
-  };
-
   return (
     <Container>
       <CanvasContainer isMobile={isMobile}>
@@ -80,23 +52,14 @@ export const ImageViewer = ({ imageUrl }: Props) => {
       <ControlsContainer isMobile={isMobile}>
         {isMobile && (
           <MobileControls
-            onReset={handleReset}
-            onRotateLeft={handleRotateLeft}
-            onRotateRight={handleRotateRight}
-            onZoomIn={handleZoomIn}
-            onZoomOut={handleZoomOut}
+            {...actions}
+            {...{ isRedoDisabled, isUndoDisabled }}
           />
         )}
         {!isMobile && (
           <Controls
-            scale={scale}
-            onFlipHorizontal={handleFlipHorizontal}
-            onFlipVertical={handleFlipVertical}
-            onReset={handleReset}
-            onRotateLeft={handleRotateLeft}
-            onRotateRight={handleRotateRight}
-            onZoomIn={handleZoomIn}
-            onZoomOut={handleZoomOut}
+            {...actions}
+            {...{ scale, isRedoDisabled, isUndoDisabled }}
           />
         )}
       </ControlsContainer>

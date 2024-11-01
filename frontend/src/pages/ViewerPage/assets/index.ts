@@ -8,3 +8,6 @@ export { ReactComponent as ResetIcon } from "./reset.svg";
 export { ReactComponent as FlipIcon } from "./flip.svg";
 export { ReactComponent as FlipVerticalIcon } from "./flip-vertical.svg";
 export { ReactComponent as FlipHorizontalIcon } from "./flip-horizontal.svg";
+export { ReactComponent as TimeIcon } from "./time.svg";
+export { ReactComponent as LeftArrowIcon } from "./left.svg";
+export { ReactComponent as RightArrowIcon } from "./right.svg";
