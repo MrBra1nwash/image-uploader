@@ -1,26 +1,33 @@
-import { ChangeEvent, useRef } from "react";
+import { ChangeEvent, MouseEvent, useRef, useState } from "react";
 import { Button, ErrorBanner } from "../../../../components";
 import {
   HiddenInput,
   UploadContainer,
   UploadIcon,
-  UploadNote,
-  UploadNoteHighlight,
+  ViewImageButtonContainer,
 } from "./styles";
 
+import { useNavigate } from "react-router-dom";
 import { BACK_END_URL } from "../../../../constants";
 import { useFetch } from "../../../../services";
-import { ReactComponent as ImagesLogo } from "./assets/images.svg";
 import { useDragAndDrop } from "../../services/use-drag-and-drop/use-drag-and-drop";
-import { ALLOWED_EXTENSIONS, MAX_FILE_SIZE } from "./constants";
+import { ReactComponent as ImagesLogo } from "./assets/images.svg";
+import { UploadNote } from "../UploadNote/UploadNote";
 
-type Props = {
-  onImageUpload: (filename: string) => void;
-};
-
-export const ImageUpload = ({ onImageUpload }: Props) => {
+export const ImageUpload = () => {
+  const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const { fetchData, error } = useFetch();
+
+  const [uploadedFilename, setUploadedFilename] = useState("");
+
+  const handleViewImage = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (uploadedFilename) {
+      navigate(`/viewer/${uploadedFilename}`);
+    }
+  };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -49,7 +56,7 @@ export const ImageUpload = ({ onImageUpload }: Props) => {
       },
       {
         onSuccess: (data: any) => {
-          onImageUpload(data.filename);
+          setUploadedFilename(data.filename);
         },
       }
     );
@@ -63,14 +70,9 @@ export const ImageUpload = ({ onImageUpload }: Props) => {
     isDragging,
   } = useDragAndDrop({ handleUpload });
 
-  const uploadNoteText = (
-    <>
-      or, drop the file here. Supported extensions:{" "}
-      <UploadNoteHighlight>{ALLOWED_EXTENSIONS.join(", ")}</UploadNoteHighlight>
-      . Max size is{" "}
-      <UploadNoteHighlight>{MAX_FILE_SIZE} Mb</UploadNoteHighlight>.
-    </>
-  );
+  const handleNewUpload = () => {
+    setUploadedFilename("");
+  };
 
   return (
     <>
@@ -85,14 +87,26 @@ export const ImageUpload = ({ onImageUpload }: Props) => {
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
-        isDragging={isDragging}
         onClick={handleContainerClick}
+        isDragging={isDragging}
       >
         <UploadIcon>
           <ImagesLogo />
         </UploadIcon>
-        <Button variant="primary">Choose Image</Button>
-        <UploadNote>{uploadNoteText}</UploadNote>
+        {!uploadedFilename && <Button variant="primary">Choose Image</Button>}
+        {uploadedFilename && (
+          <>
+            <ViewImageButtonContainer>
+              <Button variant="primary" onClick={handleViewImage}>
+                View {uploadedFilename}
+              </Button>
+            </ViewImageButtonContainer>
+          </>
+        )}
+        <UploadNote
+          uploadedFilename={uploadedFilename}
+          onNewUpload={handleNewUpload}
+        />
         <HiddenInput
           ref={inputRef}
           type="file"

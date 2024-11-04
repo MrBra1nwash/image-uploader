@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const ToggleContainer = styled.div<{ enabled: boolean }>`
-  width: 60px;
+  width: 50px;
   height: 20px;
   border-radius: 50px;
   background-color: ${({ enabled }) => (enabled ? "#4CAF50" : "#F44336")};

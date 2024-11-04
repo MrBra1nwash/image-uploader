@@ -22,6 +22,7 @@ export const useUndoRedoStore = () => {
       dispatch({ type: "startLine", payload: { point } }),
     onDrawLine: (point: Point) =>
       dispatch({ type: "drawLine", payload: { point } }),
+    onResetTransformations: () => dispatch({ type: "resetTransformations" }),
   };
 
   const isUndoDisabled = past.length === 0;

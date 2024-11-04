@@ -1,4 +1,4 @@
-import { RefObject, useEffect, MouseEvent } from "react";
+import { RefObject, useEffect, MouseEvent, TouchEvent } from "react";
 import { Line, Point } from "../reducer/types";
 import { BACK_END_URL } from "../../../../constants";
 
@@ -10,6 +10,7 @@ type Props = {
   imageUrl: string;
   onStartLine: (point: Point) => void;
   onDrawLine: (point: Point) => void;
+  onResetTransformations: () => void;
 };
 
 export const useHandleDrawing = ({
@@ -20,6 +21,7 @@ export const useHandleDrawing = ({
   imageUrl,
   onDrawLine,
   onStartLine,
+  onResetTransformations,
 }: Props) => {
   const canvasDrawing = drawingCanvasRef.current;
 
@@ -51,36 +53,86 @@ export const useHandleDrawing = ({
     const ctx = drawCanvas?.getContext("2d");
     if (!drawCanvas || !ctx) return;
 
-    ctx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
-    lines.forEach((line) => {
-      ctx.strokeStyle = line.color;
-      ctx.beginPath();
-      line.points.forEach(({ x, y }, index) => {
-        if (index === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+    const redrawLines = () => {
+      ctx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+      lines.forEach((line) => {
+        ctx.strokeStyle = line.color;
+        ctx.beginPath();
+        line.points.forEach(({ x, y }, index) => {
+          const absX = x * drawCanvas.width;
+          const absY = y * drawCanvas.height;
+          if (index === 0) {
+            ctx.moveTo(absX, absY);
+          } else {
+            ctx.lineTo(absX, absY);
+          }
+        });
+        ctx.stroke();
       });
-      ctx.stroke();
-    });
+    };
+
+    redrawLines();
+
+    const handleResize = () => {
+      redrawLines();
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [drawingCanvasRef, lines]);
 
-  const handleMouseDown = (event: MouseEvent<HTMLCanvasElement>) => {
+  const handlePointerDown = (event: MouseEvent | TouchEvent) => {
     if (!enabledDrawMode || !canvasDrawing) return;
 
+    // This line is an important simplification.
+    // Otherwise we need to calculate positions of points based on current values of
+    // scale, flip etc. It complicates code a lot I avoided it for simplicity.
+    onResetTransformations();
     const rect = canvasDrawing.getBoundingClientRect();
-    const point = { x: event.clientX - rect.left, y: event.clientY - rect.top };
-    onStartLine(point);
+    const point = {
+      x:
+        ("clientX" in event ? event.clientX : event.touches[0].clientX) -
+        rect.left,
+      y:
+        ("clientY" in event ? event.clientY : event.touches[0].clientY) -
+        rect.top,
+    };
+
+    // We need to store points relatively, because when image is resized - even on load image load
+    // if we upload 5000x3000 image on FHD monitor image will be resized and points of drawings will be displaced
+    onStartLine({
+      x: point.x / rect.width,
+      y: point.y / rect.height,
+    });
   };
 
-  const handleMouseMove = (event: MouseEvent<HTMLCanvasElement>) => {
-    if (!enabledDrawMode || !canvasDrawing || event.buttons !== 1) return;
-
+  const handlePointerMove = (event: MouseEvent | TouchEvent) => {
+    if (
+      !enabledDrawMode ||
+      !canvasDrawing ||
+      ("buttons" in event && event.buttons !== 1)
+    )
+      return;
     const rect = canvasDrawing.getBoundingClientRect();
-    const point = { x: event.clientX - rect.left, y: event.clientY - rect.top };
-    onDrawLine(point);
+    const point = {
+      x:
+        ("clientX" in event ? event.clientX : event.touches[0].clientX) -
+        rect.left,
+      y:
+        ("clientY" in event ? event.clientY : event.touches[0].clientY) -
+        rect.top,
+    };
+
+    onDrawLine({
+      x: point.x / rect.width,
+      y: point.y / rect.height,
+    });
   };
 
   return {
-    handleMouseDown,
-    handleMouseMove,
+    handleMouseDown: handlePointerDown,
+    handleMouseMove: handlePointerMove,
+    handleTouchStart: handlePointerDown,
+    handleTouchMove: handlePointerMove,
   };
 };

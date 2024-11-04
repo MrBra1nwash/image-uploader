@@ -1,6 +1,10 @@
 import { useRef } from "react";
 import { useIsMobile } from "../../../../services";
-import { useHandleDrawing, useUndoRedoStore } from "../../services";
+import {
+  useHandleDrawing,
+  useHandleHotKeys,
+  useUndoRedoStore,
+} from "../../services";
 import { Controls } from "../Controls/Controls";
 import { MobileControls } from "../MobileControls/MobileControls";
 import {
@@ -25,14 +29,25 @@ export const ImageViewer = ({ imageUrl }: Props) => {
       lines,
       color,
     },
-    actions: { onDrawLine, onStartLine, ...controlsActions },
+    actions: {
+      onDrawLine,
+      onStartLine,
+      onResetTransformations,
+      ...controlsActions
+    },
     isRedoDisabled,
     isUndoDisabled,
   } = useUndoRedoStore();
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const drawingCanvasRef = useRef<HTMLCanvasElement>(null);
   const isMobile = useIsMobile();
-  const { handleMouseDown, handleMouseMove } = useHandleDrawing({
+  const {
+    handleMouseDown,
+    handleMouseMove,
+    handleTouchMove,
+    handleTouchStart,
+  } = useHandleDrawing({
     canvasRef,
     drawingCanvasRef,
     enabledDrawMode,
@@ -40,6 +55,14 @@ export const ImageViewer = ({ imageUrl }: Props) => {
     imageUrl,
     onDrawLine,
     onStartLine,
+    onResetTransformations,
+  });
+
+  useHandleHotKeys({
+    onUndo: controlsActions.onUndo,
+    onRedo: controlsActions.onRedo,
+    onCancelDrawMode: () =>
+      enabledDrawMode && controlsActions.onToggleDrawingMode(),
   });
 
   return (
@@ -64,13 +87,15 @@ export const ImageViewer = ({ imageUrl }: Props) => {
           ref={drawingCanvasRef}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
         />
       </CanvasContainer>
       <ControlsContainer isMobile={isMobile}>
         {isMobile && (
           <MobileControls
             {...controlsActions}
-            {...{ isRedoDisabled, isUndoDisabled }}
+            {...{ isRedoDisabled, isUndoDisabled, color, enabledDrawMode }}
           />
         )}
         {!isMobile && (

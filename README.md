@@ -17,6 +17,7 @@ In order ro run backend part:
 ## General comments:
 
 - I didn't use `useCallback`, `useMemo`, `memo`, because it doesn't make sense for this small app. All these performance optimizations costs you something (complexity, extra lines of code etc) and I don't use them when they are not needed. We can discuss in details on the call every case if needed.
+- I tried to not use libs as much as possible. Because I think it shows better how I implement something from scratch rather including 3-d party lib.
 
 ## What else can be improved:
 

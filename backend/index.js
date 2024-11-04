@@ -101,7 +101,10 @@ const server = http.createServer((req, res) => {
       });
     });
   } else if (req.method === "GET" && url.pathname.startsWith("/images/")) {
-    const filename = url.pathname.substring("/images/".length);
+    // Decode the filename to handle spaces and special characters
+    const filename = decodeURIComponent(
+      url.pathname.substring("/images/".length)
+    );
     const imagePath = `uploads/${filename}`;
 
     fs.readFile(imagePath, (err, data) => {

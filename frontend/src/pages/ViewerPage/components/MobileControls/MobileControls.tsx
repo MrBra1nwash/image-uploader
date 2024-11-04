@@ -1,3 +1,4 @@
+import { ColorPicker } from "../../../../components";
 import {
   MinusIcon,
   PlusIcon,
@@ -11,6 +12,9 @@ import {
 } from "../../assets";
 import { ControlCallbacks } from "../../types";
 
+import { ReactComponent as PencilEnabledIcon } from "./assets/pencil.svg";
+import { ReactComponent as PencilDisabledIcon } from "./assets/pencil-disabled.svg";
+
 import {
   ControlIconWrapper,
   ControlItemWrapper,
@@ -21,6 +25,8 @@ import {
 type Props = ControlCallbacks & {
   isRedoDisabled: boolean;
   isUndoDisabled: boolean;
+  color: string;
+  enabledDrawMode: boolean;
 };
 
 export const MobileControls = ({
@@ -33,8 +39,12 @@ export const MobileControls = ({
   onZoomIn,
   onZoomOut,
   onReset,
+  onSetColor,
+  onToggleDrawingMode,
   isRedoDisabled,
   isUndoDisabled,
+  color,
+  enabledDrawMode,
 }: Props) => {
   const controls = [
     {
@@ -66,6 +76,15 @@ export const MobileControls = ({
       icon: <FlipVerticalIcon />,
       callback: onFlipVertical,
       text: "Flip Vertical",
+    },
+    {
+      icon: enabledDrawMode ? <PencilEnabledIcon /> : <PencilDisabledIcon />,
+      callback: onToggleDrawingMode,
+      text: "Toggle Drawing",
+    },
+    {
+      icon: <ColorPicker size="small" color={color} onChange={onSetColor} />,
+      text: "Change Color",
     },
     {
       icon: <LeftArrowIcon />,

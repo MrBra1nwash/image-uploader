@@ -8,7 +8,9 @@ export const UploadContainer = styled.div<{ isDragging: boolean }>`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 300px;
+  padding: 15px;
+  box-sizing: border-box;
+  min-height: 300px;
   border: 2px dashed #ccc;
   border-radius: 10px;
   margin-bottom: 20px;
@@ -21,22 +23,16 @@ export const UploadContainer = styled.div<{ isDragging: boolean }>`
   }
 `;
 
-export const UploadNoteHighlight = styled.span`
-  font-weight: bold;
-  color: #666;
-`;
-
 export const UploadIcon = styled.div`
   font-size: 48px;
   margin-bottom: 10px;
 `;
 
-export const UploadNote = styled.p`
-  text-align: center;
-  padding: 4px 20px;
-  font-size: 14px;
-`;
-
 export const HiddenInput = styled.input`
   display: none;
+`;
+
+export const ViewImageButtonContainer = styled.div`
+  max-width: 250px;
+  margin: 0 20px;
 `;

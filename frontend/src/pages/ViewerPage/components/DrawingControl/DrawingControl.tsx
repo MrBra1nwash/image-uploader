@@ -1,7 +1,5 @@
-import { HexColorPicker } from "react-colorful";
-import { Switch } from "../../../../components";
-import { ReactComponent as PencilEnabled } from "./assets/pencil.svg";
-import { ReactComponent as PencilDisabled } from "./assets/pencil-disabled.svg";
+import { ColorPicker, Switch } from "../../../../components";
+import { DrawingControlsContainer } from "./styles";
 
 type Props = {
   color: string;
@@ -17,14 +15,9 @@ export const DrawingControl = ({
   onToggleDrawingMode,
 }: Props) => {
   return (
-    <>
-      <Switch
-        enabled={enabledDrawMode}
-        onToggle={onToggleDrawingMode}
-        enabledIcon={PencilEnabled}
-        disabledIcon={PencilDisabled}
-      />
-      <HexColorPicker color={color} onChange={onSetColor} />
-    </>
+    <DrawingControlsContainer>
+      <Switch enabled={enabledDrawMode} onToggle={onToggleDrawingMode} />
+      <ColorPicker color={color} onChange={onSetColor} />
+    </DrawingControlsContainer>
   );
 };

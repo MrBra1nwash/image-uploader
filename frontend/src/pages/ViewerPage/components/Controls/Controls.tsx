@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Accordion } from "../../../../components";
-import { MenuRow } from "../MenuRow/MenuRow";
+import { ControlTitleRow } from "../ControlTitleRow/ControlTitleRow";
 import {
   DrawIcon,
   FlipHorizontalIcon,
@@ -147,7 +147,9 @@ export const Controls = ({
         // Totally fine to use `index` as a key in this case. We don't change order of items in any way
         <Accordion
           key={index}
-          title={<MenuRow icon={title.icon}>{title.text}</MenuRow>}
+          title={
+            <ControlTitleRow icon={title.icon}>{title.text}</ControlTitleRow>
+          }
         >
           <RowControlsContainer>
             {buttons?.map(({ callback, icon: Icon, disabled }, index) => (

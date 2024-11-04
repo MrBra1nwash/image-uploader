@@ -121,6 +121,37 @@ export const reducer = (
       return initialState;
     }
 
+    case "resetTransformations": {
+      const { flipHorizontal, flipVertical, rotation, scale } =
+        initialState.now;
+      const areTransformationsDefault =
+        now.flipHorizontal === flipHorizontal &&
+        now.flipVertical === flipVertical &&
+        now.rotation === rotation &&
+        now.scale === scale;
+
+      if (areTransformationsDefault) {
+        return state;
+      }
+
+      console.log(`
+      For simplification purposes drawing on the canvas is resetting current transformation.
+      Otherwise we need to calculate positions of points based on current values of
+      scale, flip etc. It complicates code a lot and I avoided it for simplicity.
+      `);
+
+      return getNewState(
+        {
+          scale,
+          rotation,
+          flipHorizontal,
+          flipVertical,
+        },
+        now,
+        past
+      );
+    }
+
     default:
       return state;
   }

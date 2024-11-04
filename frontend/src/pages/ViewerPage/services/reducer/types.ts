@@ -9,6 +9,7 @@ export type Action =
   | { type: "zoomOut" }
   | { type: "reset" }
   | { type: "toggleDrawingMode" }
+  | { type: "resetTransformations" }
   | { type: "startLine"; payload: { point: Point } }
   | { type: "drawLine"; payload: { point: Point } }
   | { type: "setColor"; payload: { color: string } };

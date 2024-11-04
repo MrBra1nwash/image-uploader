@@ -5,7 +5,7 @@ type Props = PropsWithChildren<{
   icon: FunctionComponent<SVGProps<SVGSVGElement>>;
 }>;
 
-export const MenuRow = ({ icon: Icon, children }: Props) => (
+export const ControlTitleRow = ({ icon: Icon, children }: Props) => (
   <RowContainer>
     <Icon />
     {children}
