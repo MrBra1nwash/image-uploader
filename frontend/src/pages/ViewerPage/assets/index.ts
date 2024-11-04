@@ -11,3 +11,4 @@ export { ReactComponent as FlipHorizontalIcon } from "./flip-horizontal.svg";
 export { ReactComponent as TimeIcon } from "./time.svg";
 export { ReactComponent as LeftArrowIcon } from "./left.svg";
 export { ReactComponent as RightArrowIcon } from "./right.svg";
+export { ReactComponent as DrawIcon } from "./draw.svg";

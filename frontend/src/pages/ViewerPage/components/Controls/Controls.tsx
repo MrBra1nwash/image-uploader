@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Accordion } from "../../../../components";
 import { MenuRow } from "../MenuRow/MenuRow";
 import {
+  DrawIcon,
   FlipHorizontalIcon,
   FlipIcon,
   FlipVerticalIcon,
@@ -24,15 +25,20 @@ import {
 } from "./styles";
 import { ControlCallbacks } from "../../types";
 import { ControlConfig } from "./types";
+import { DrawingControl } from "../DrawingControl/DrawingControl";
 
 type Props = ControlCallbacks & {
   scale: number;
+  color: string;
+  enabledDrawMode: boolean;
   isRedoDisabled: boolean;
   isUndoDisabled: boolean;
 };
 
 export const Controls = ({
   scale,
+  color,
+  enabledDrawMode,
   isRedoDisabled,
   isUndoDisabled,
   onUndo,
@@ -44,6 +50,8 @@ export const Controls = ({
   onZoomIn,
   onZoomOut,
   onReset,
+  onSetColor,
+  onToggleDrawingMode,
 }: Props) => {
   const zoomValue = useMemo(() => {
     if (scale > 4) {
@@ -104,6 +112,17 @@ export const Controls = ({
     },
     {
       title: {
+        icon: DrawIcon,
+        text: "Draw",
+      },
+      extra: (
+        <DrawingControl
+          {...{ color, enabledDrawMode, onSetColor, onToggleDrawingMode }}
+        />
+      ),
+    },
+    {
+      title: {
         icon: TimeIcon,
         text: "Time Travel",
       },
@@ -131,7 +150,7 @@ export const Controls = ({
           title={<MenuRow icon={title.icon}>{title.text}</MenuRow>}
         >
           <RowControlsContainer>
-            {buttons.map(({ callback, icon: Icon, disabled }, index) => (
+            {buttons?.map(({ callback, icon: Icon, disabled }, index) => (
               <ControlIconWrapper
                 key={index}
                 onClick={callback}

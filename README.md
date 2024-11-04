@@ -16,7 +16,7 @@ In order ro run backend part:
 
 ## General comments:
 
-- I didn't use `useCallback`, `useMemo`, `memo`, because it doesn't make sense for this small app. All these performance optimizations costs you something (complexity, extra lines of code etc) and I don't use them when they are not needed.
+- I didn't use `useCallback`, `useMemo`, `memo`, because it doesn't make sense for this small app. All these performance optimizations costs you something (complexity, extra lines of code etc) and I don't use them when they are not needed. We can discuss in details on the call every case if needed.
 
 ## What else can be improved:
 

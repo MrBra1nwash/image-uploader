@@ -8,4 +8,6 @@ export type ControlCallbacks = {
   onZoomIn: () => void;
   onZoomOut: () => void;
   onReset: () => void;
+  onToggleDrawingMode: () => void;
+  onSetColor: (color: string) => void;
 };

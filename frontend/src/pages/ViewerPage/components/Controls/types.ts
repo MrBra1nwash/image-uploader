@@ -5,7 +5,7 @@ export type ControlConfig = {
     icon: FunctionComponent<SVGProps<SVGSVGElement>>;
     text: string;
   };
-  buttons: {
+  buttons?: {
     icon: FunctionComponent<SVGProps<SVGSVGElement>>;
     callback: () => void;
     disabled?: boolean;

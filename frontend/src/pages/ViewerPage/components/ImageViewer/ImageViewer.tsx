@@ -1,7 +1,6 @@
-import { useEffect, useRef } from "react";
-import { BACK_END_URL } from "../../../../constants";
+import { useRef } from "react";
 import { useIsMobile } from "../../../../services";
-import { useUndoRedoStore } from "../../services/use-undo-redo-store/use-undo-redo-store";
+import { useHandleDrawing, useUndoRedoStore } from "../../services";
 import { Controls } from "../Controls/Controls";
 import { MobileControls } from "../MobileControls/MobileControls";
 import {
@@ -17,49 +16,73 @@ type Props = {
 
 export const ImageViewer = ({ imageUrl }: Props) => {
   const {
-    state: { flipHorizontal, flipVertical, rotation, scale },
-    actions,
+    state: {
+      flipHorizontal,
+      flipVertical,
+      rotation,
+      scale,
+      enabledDrawMode,
+      lines,
+      color,
+    },
+    actions: { onDrawLine, onStartLine, ...controlsActions },
     isRedoDisabled,
     isUndoDisabled,
   } = useUndoRedoStore();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const drawingCanvasRef = useRef<HTMLCanvasElement>(null);
   const isMobile = useIsMobile();
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext("2d");
-    const img = new Image();
-
-    img.onload = () => {
-      if (!canvas || !ctx) return;
-
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-    };
-
-    img.src = `${BACK_END_URL}/images/${imageUrl}`;
-  }, [imageUrl]);
+  const { handleMouseDown, handleMouseMove } = useHandleDrawing({
+    canvasRef,
+    drawingCanvasRef,
+    enabledDrawMode,
+    lines,
+    imageUrl,
+    onDrawLine,
+    onStartLine,
+  });
 
   return (
     <Container>
       <CanvasContainer isMobile={isMobile}>
         <Canvas
+          {...{
+            rotation,
+            scale,
+            flipHorizontal,
+            flipVertical,
+          }}
           ref={canvasRef}
-          {...{ rotation, scale, flipHorizontal, flipVertical }}
+        />
+        <Canvas
+          {...{
+            rotation,
+            scale,
+            flipHorizontal,
+            flipVertical,
+          }}
+          ref={drawingCanvasRef}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
         />
       </CanvasContainer>
       <ControlsContainer isMobile={isMobile}>
         {isMobile && (
           <MobileControls
-            {...actions}
+            {...controlsActions}
             {...{ isRedoDisabled, isUndoDisabled }}
           />
         )}
         {!isMobile && (
           <Controls
-            {...actions}
-            {...{ scale, isRedoDisabled, isUndoDisabled }}
+            {...controlsActions}
+            {...{
+              scale,
+              isRedoDisabled,
+              isUndoDisabled,
+              color,
+              enabledDrawMode,
+            }}
           />
         )}
       </ControlsContainer>
