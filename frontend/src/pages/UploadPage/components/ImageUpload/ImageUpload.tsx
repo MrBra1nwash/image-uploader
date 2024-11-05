@@ -22,6 +22,7 @@ export const ImageUpload = () => {
   const [uploadedFilename, setUploadedFilename] = useState("");
 
   const handleViewImage = (event: MouseEvent<HTMLButtonElement>) => {
+    // To not trigger `handleContainerClick`
     event.preventDefault();
     event.stopPropagation();
     if (uploadedFilename) {
@@ -111,7 +112,7 @@ export const ImageUpload = () => {
           ref={inputRef}
           type="file"
           id="imageInput"
-          accept=".jpg, .jpeg, .png, .gif, .bmp, .webp"
+          accept=".jpg, .jpeg, .png"
           onChange={handleFileChange}
         />
       </UploadContainer>

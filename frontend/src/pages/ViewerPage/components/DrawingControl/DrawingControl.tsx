@@ -3,8 +3,8 @@ import { DrawingControlsContainer } from "./styles";
 
 type Props = {
   color: string;
-  onSetColor: (color: string) => void;
   enabledDrawMode: boolean;
+  onSetColor: (color: string) => void;
   onToggleDrawingMode: () => void;
 };
 

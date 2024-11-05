@@ -25,6 +25,7 @@ export const useHandleDrawing = ({
 }: Props) => {
   const canvasDrawing = drawingCanvasRef.current;
 
+  // Load image to canvas and set the 2-nd canvas sizes equal to the image size
   useEffect(() => {
     const canvas = canvasRef.current;
     const canvasDrawing = drawingCanvasRef.current;
@@ -48,6 +49,7 @@ export const useHandleDrawing = ({
     img.src = `${BACK_END_URL}/images/${imageUrl}`;
   }, [canvasRef, drawingCanvasRef, imageUrl]);
 
+  // Draw lines based on values in store
   useEffect(() => {
     const drawCanvas = drawingCanvasRef.current;
     const ctx = drawCanvas?.getContext("2d");
@@ -83,10 +85,11 @@ export const useHandleDrawing = ({
 
   const handlePointerDown = (event: MouseEvent | TouchEvent) => {
     if (!enabledDrawMode || !canvasDrawing) return;
-
-    // This line is an important simplification.
-    // Otherwise we need to calculate positions of points based on current values of
-    // scale, flip etc. It complicates code a lot I avoided it for simplicity.
+    /**
+     * This line is an important simplification.
+     * Otherwise we need to calculate positions of points based on current values of
+     * scale, flip etc. It complicates code a lot so I avoided it for simplicity.
+     */
     onResetTransformations();
     const rect = canvasDrawing.getBoundingClientRect();
     const point = {
@@ -98,8 +101,14 @@ export const useHandleDrawing = ({
         rect.top,
     };
 
-    // We need to store points relatively, because when image is resized - even on load image load
-    // if we upload 5000x3000 image on FHD monitor image will be resized and points of drawings will be displaced
+    /**
+     * To ensure drawings correctly adjust when the image is resized,
+     * we store point coordinates relative to the canvas dimensions.
+     * This prevents displacement issues that can occur when the image
+     * resolution exceeds the available screen size. By dividing the coordinates
+     * by the canvas width and height, we store them as percentages,
+     * allowing the drawing to scale proportionally with the image.
+     */
     onStartLine({
       x: point.x / rect.width,
       y: point.y / rect.height,

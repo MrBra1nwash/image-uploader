@@ -5,17 +5,13 @@ const openChildrenContainer = css`
   margin-bottom: 10px;
 `;
 
-const openRow = css`
-  background-color: rgba(255, 255, 255, 0.04);
-`;
-
 export const ChildrenContainer = styled.div<{
   isOpen: boolean;
-  maxHeight: string;
+  maxHeight: number;
 }>`
   overflow: hidden;
   transition: max-height 0.1s linear;
-  max-height: ${({ maxHeight }) => maxHeight};
+  max-height: ${({ maxHeight }) => maxHeight}px;
   padding-left: 10px;
   ${({ isOpen }) => isOpen && openChildrenContainer}
 `;
@@ -33,7 +29,7 @@ export const TitleRow = styled.div<{ isOpen: boolean }>`
   padding: 10px;
   justify-content: space-between;
   transition: background-color 0.2s linear;
-  ${({ isOpen }) => isOpen && openRow}
+  ${({ isOpen }) => isOpen && "background-color: rgba(255, 255, 255, 0.04);"}
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.04);

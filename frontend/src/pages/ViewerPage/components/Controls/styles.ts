@@ -29,8 +29,6 @@ export const ControlIconWrapper = styled.div<{ disabled: boolean }>`
     255,
     ${({ disabled }) => (disabled ? "0.01" : "0.04")}
   );
-  outline: none;
-  border: none;
   border-radius: 4px;
 
   ${({ disabled }) =>

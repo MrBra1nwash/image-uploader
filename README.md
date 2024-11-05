@@ -1,32 +1,84 @@
-# Image uploader
+# Image Uploader
 
-# Setup
+This project is a simple image uploader application with basic image manipulation features.
 
-In order ro run frontend part:
+## Features
 
-1. From terminal go into frontend directory - `cd frontend`
-2. Install dependencies `npm i`
-3. Run frontend `npm start`
+- Upload images via button or drag and drop
+- Draw on images
+- Rotate and scale images
+- Flip images horizontally and vertically
+- Undo/Redo functionality
+- Keyboard shortcuts for common actions:
+  - `Ctr+z`/`Cmd+z` for undo
+  - `Ctr+shift+z`/`Cmd+shift+z` for redo
+  - `Escape` to exit drawing mode
+- Error handling for incorrect file types and big sizes
+- Responsive design
 
-In order ro run backend part:
+## Getting Started
 
-1. From terminal go into backend directory - `cd backend`
-2. Install dependencies `npm i`
-3. Run frontend `node index.js`
+### Prerequisites
 
-## General comments:
+- Node.js and npm (or yarn) installed
 
-- I didn't use `useCallback`, `useMemo`, `memo`, because it doesn't make sense for this small app. All these performance optimizations costs you something (complexity, extra lines of code etc) and I don't use them when they are not needed. We can discuss in details on the call every case if needed.
-- I tried to not use libs as much as possible. Because I think it shows better how I implement something from scratch rather including 3-d party lib.
+### Installation
 
-## What else can be improved:
+1. Clone the repository: `git clone https://github.com/MrBra1nwash/image-uploader.git`. Or use any other provided by `<> Code` green button at the top.
+2. Navigate to the project directory: `cd image-uploader`
+3. Run the setup script:
 
-It is just few thoughts what can be improved, but the list can be infinite and will take a lot of time.
+   **Mac:**
 
-- Upload to heroku or similar
-- Change local storage of `uploads` folder to `s3` or something similar
-- Add protection if two steps above are done to limit amount of uploads, maybe some basic authentication to restrict public access
-- Cover with tests: unit and integration
-- Add image compression to store it in a more efficient way
-- Store every image and show them to the user to be able to pick what to view and what to delete
-- Save all manipulations with the image on the server: painting, resizing etc.
+   ```bash
+   # The `chmod +x start.sh` needs to run only once.
+   # All subsequent runs can be just `./start.sh`.
+   chmod +x start.sh && ./start.sh
+   ```
+
+   **Windows:**
+
+   ```bash
+   start.sh
+   ```
+
+This script will automatically install dependencies and start both the frontend and backend servers.
+
+## Manual Run (Optional)
+
+If the setup script doesn't work or want to have a more control, you can manually start the app:
+
+**Backend**
+
+1. Navigate to the backend directory: `cd backend`
+2. Install dependencies: `npm install`
+3. Start the server: `node index.js`
+
+**Frontend**
+
+1. Navigate to the frontend directory: `cd frontend`
+2. Install dependencies: `npm install`
+3. Start the development server: `npm start`
+
+## Usage
+
+1. Upload an image using the upload button or via drag and drop.
+2. Use the controls to manipulate the image (rotate, scale, flip).
+3. Enable drawing mode to draw on the image.
+4. Use the undo/redo buttons or keyboard shortcuts (Ctrl+Z, Ctrl+Shift+Z) to manage your edits.
+
+## Technical Notes
+
+- This project prioritizes simplicity and clarity over excessive performance optimizations. So you will not find useless `useCallback` around every function and method as you might used to see :)
+- External libraries are minimized to demonstrate core concepts and implementations.
+- I intentionally extended the list of supported formats and added `jpeg`. Despite the fact that in the requirements it is "JPG or PNG format". But JPG and JPEG are identical and JPG is from old days. So in my opinion it is easier to test the app when you have support of JPEG.
+
+## Future Improvements
+
+- Deploy to a cloud platform (e.g., Heroku)
+- Use a cloud storage service (e.g., AWS S3) for storing images
+- Implement user authentication and authorization
+- Add comprehensive unit and integration tests
+- Implement image compression for efficient storage
+- Add image management features (e.g., viewing the list, deleting, etc)
+- Persist image manipulations on the server

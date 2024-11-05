@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, SVGProps } from "react";
+import { ReactNode } from "react";
 
 export type ControlConfig = {
   icon?: ReactNode;

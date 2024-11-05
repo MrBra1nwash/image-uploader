@@ -40,7 +40,7 @@ export const ColorPicker = ({ size = "regular", color, onChange }: Props) => {
 
   const setTooltipToProperPosition = useCallback(() => {
     if (showTooltip && selectedColorRef.current && colorPickerRef.current) {
-      // Calculate tooltip position to center it above color selector
+      // Calculate tooltip position to center it above color selector.
       // It is positioned fixed to not be influenced by overflow: hidden and other parent's CSS props
       const selectedColorReact =
         selectedColorRef.current.getBoundingClientRect();

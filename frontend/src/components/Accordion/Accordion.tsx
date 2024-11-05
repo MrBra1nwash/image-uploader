@@ -17,14 +17,14 @@ export const Accordion = ({ title, children }: Props) => {
   const toggleOpen = () => setIsOpen(!isOpen);
 
   const contentRef = useRef<HTMLDivElement>(null);
-  const [contentHeight, setContentHeight] = useState("0px");
+  const [contentHeight, setContentHeight] = useState(0);
 
   // To make animation work for the content with unknown height
   useEffect(() => {
     if (isOpen && contentRef.current) {
-      setContentHeight(`${contentRef.current.scrollHeight}px`);
+      setContentHeight(contentRef.current.scrollHeight);
     } else {
-      setContentHeight("0px");
+      setContentHeight(0);
     }
     // Children is presented in deps array to trigger content height recalculation when children changes
   }, [isOpen, children]);
